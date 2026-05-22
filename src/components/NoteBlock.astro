@@ -10,8 +10,6 @@ const dateStr = date ? date.toISOString().split('T')[0] : '';
 
 <div class="note-card">
   <div class="note-ts">{dateStr}</div>
-  <div class="note-body">
-    <note.Content />
-  </div>
+  <div class="note-body">{note.body}</div>
   {tags.length > 0 && <div class="note-tag">#{tags.join(' #')}</div>}
 </div>
