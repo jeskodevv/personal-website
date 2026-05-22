@@ -1,7 +1,6 @@
 ---
 import { getCollection } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
-import NoteBlock from '../../components/NoteBlock.astro';
 
 const notes = await getCollection('notes', n => !n.data.draft);
 const sorted = notes.sort((a, b) => 
@@ -17,7 +16,16 @@ const sorted = notes.sort((a, b) =>
       <span class="ts">{sorted.length} entries</span>
     </div>
     <div class="notes-grid">
-      {sorted.map(n => <NoteBlock note={n} />)}
+      {sorted.map(n => {
+        const dateStr = n.data.date ? n.data.date.toISOString().split('T')[0] : '';
+        return (
+          <a href={`/notes/${n.id}`} class="note-card">
+            <div class="note-ts">{dateStr}</div>
+            <div class="note-body">{n.body}</div>
+            {n.data.tags.length > 0 && <div class="note-tag">#{n.data.tags.join(' #')}</div>}
+          </a>
+        );
+      })}
     </div>
   </section>
 </BaseLayout>
