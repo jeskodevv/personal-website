@@ -1,0 +1,23 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import NoteBlock from '../../components/NoteBlock.astro';
+
+const notes = await getCollection('notes', n => !n.data.draft);
+const sorted = notes.sort((a, b) => 
+  new Date(b.data.date).getTime() - new Date(a.data.date).getTime()
+);
+---
+
+<BaseLayout title="notes — engineering archive">
+  <section style="padding-top:4rem;">
+    <div class="section-header">
+      <h2>notes</h2>
+      <div class="divider"></div>
+      <span class="ts">{sorted.length} entries</span>
+    </div>
+    <div class="notes-grid">
+      {sorted.map(n => <NoteBlock note={n} />)}
+    </div>
+  </section>
+</BaseLayout>

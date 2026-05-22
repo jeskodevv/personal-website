@@ -1,0 +1,23 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import ProjectCard from '../../components/ProjectCard.astro';
+
+const projects = await getCollection('projects', p => !p.data.draft);
+const sorted = projects.sort((a, b) => 
+  new Date(b.data.started).getTime() - new Date(a.data.started).getTime()
+);
+---
+
+<BaseLayout title="projects — engineering archive">
+  <section style="padding-top:4rem;">
+    <div class="section-header">
+      <h2>all projects</h2>
+      <div class="divider"></div>
+      <span class="ts">{sorted.length} entries</span>
+    </div>
+    <div class="project-list">
+      {sorted.map(p => <ProjectCard project={p} />)}
+    </div>
+  </section>
+</BaseLayout>

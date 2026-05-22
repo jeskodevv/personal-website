@@ -1,0 +1,15 @@
+{
+  "name": "site-engine",
+  "type": "module",
+  "version": "0.7.0",
+  "description": "A living archive of systems, experiments, and ideas built in public.",
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview"
+  },
+  "dependencies": {
+    "astro": "^5.0.0",
+    "@astrojs/mdx": "^4.0.0"
+  }
+}

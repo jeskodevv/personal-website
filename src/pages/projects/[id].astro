@@ -1,0 +1,48 @@
+---
+import { getCollection, render } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+
+export async function getStaticPaths() {
+  const projects = await getCollection('projects');
+  return projects.map(project => ({
+    params: { id: project.id },
+    props: { project },
+  }));
+}
+
+const { project } = Astro.props;
+const { Content } = await render(project);
+
+const statusClass = {
+  active: 'status-active',
+  paused: 'status-paused',
+  archived: 'status-archived',
+  learning: 'status-learning',
+  unstable: 'status-learning',
+  stable: 'status-active'
+}[project.data.status] || 'status-paused';
+
+const startedStr = project.data.started ? project.data.started.toISOString().split('T')[0] : '';
+const updatedStr = project.data.updated ? project.data.updated.toISOString().split('T')[0] : 'present';
+---
+
+<BaseLayout title={`${project.data.title} — project journal`}>
+  <section style="padding-top:4rem;">
+    <div class="project-detail-meta">
+      <span>{project.id}</span>
+      <span>{startedStr} → {updatedStr}</span>
+      <span>v{project.data.version}</span>
+      <span class={`project-status ${statusClass}`}>{project.data.status}</span>
+    </div>
+    <h1 class="hero-name" style="font-size:2.5rem; margin-bottom:1rem;">{project.data.title}</h1>
+    <p style="font-size:1rem; color:var(--text-secondary); max-width:600px; margin-bottom:2rem;">
+      {project.data.description}
+    </p>
+    <div class="project-tags" style="margin-bottom:3rem;">
+      {project.data.tags.map(tag => <span class="tag">{tag}</span>)}
+    </div>
+    <div class="project-detail-content">
+      <Content />
+    </div>
+  </section>
+</BaseLayout>

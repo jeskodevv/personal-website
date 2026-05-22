@@ -1,0 +1,33 @@
+---
+import { getCollection, render } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+
+export async function getStaticPaths() {
+  const journals = await getCollection('journals');
+  return journals.map(entry => ({
+    params: { id: entry.id },
+    props: { entry },
+  }));
+}
+
+const { entry } = Astro.props;
+const { Content } = await render(entry);
+const dateStr = entry.data.date ? entry.data.date.toISOString().split('T')[0] : '';
+---
+
+<BaseLayout title={`journal — ${dateStr}`}>
+  <section style="padding-top:4rem;">
+    <div class="section-header">
+      <h2>journal entry</h2>
+      <div class="divider"></div>
+      <span class="ts">{dateStr}</span>
+    </div>
+    <div class="journal-meta">
+      {entry.data.project && <span>→ {entry.data.project}</span>}
+      {entry.data.tags.map(tag => <span class="tag">{tag}</span>)}
+    </div>
+    <div class="journal-body">
+      <Content />
+    </div>
+  </section>
+</BaseLayout>
