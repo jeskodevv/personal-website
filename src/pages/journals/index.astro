@@ -1,7 +1,6 @@
 ---
 import { getCollection } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
-import JournalEntry from '../../components/JournalEntry.astro';
 
 const journals = await getCollection('journals', j => !j.data.draft);
 const sorted = journals.sort((a, b) => 
@@ -17,7 +16,19 @@ const sorted = journals.sort((a, b) =>
       <span class="ts">{sorted.length} entries</span>
     </div>
     <div class="content-list">
-      {sorted.map(j => <JournalEntry journal={j} />)}
+      {sorted.map(j => {
+        const dateStr = j.data.date ? j.data.date.toISOString().split('T')[0] : '';
+        return (
+          <a href={`/journals/${j.id}`} class="content-entry">
+            <div class="content-meta">
+              <span>{dateStr}</span>
+              {j.data.project && <span>→ {j.data.project}</span>}
+              {j.data.tags.map(tag => <span class="tag">{tag}</span>)}
+            </div>
+            <div class="content-title">{j.data.title || `Journal — ${dateStr}`}</div>
+          </a>
+        );
+      })}
     </div>
   </section>
 </BaseLayout>
