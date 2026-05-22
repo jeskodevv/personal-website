@@ -1,7 +1,6 @@
 ---
 import { getCollection } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
-import ExperimentCard from '../../components/ExperimentCard.astro';
 
 const experiments = await getCollection('lab', e => !e.data.draft);
 const sorted = experiments.sort((a, b) => 
@@ -16,6 +15,29 @@ const sorted = experiments.sort((a, b) =>
       <div class="divider"></div>
       <span class="ts">{sorted.length} experiments</span>
     </div>
-    {sorted.map(e => <ExperimentCard experiment={e} />)}
+    {sorted.map(e => {
+      const startedStr = e.data.started ? e.data.started.toISOString().split('T')[0] : '';
+      return (
+        <a href={`/lab/${e.id}`} class="experiment-card">
+          <div class="experiment-header">
+            <div class="experiment-title">{e.data.title}</div>
+            <span class={`experiment-status ${e.data.status}`}>{e.data.status}</span>
+          </div>
+          <div class="experiment-meta">started {startedStr} {e.data.tags.map(t => <span class="tag">{t}</span>)}</div>
+          {e.data.hypothesis && (
+            <div class="experiment-section">
+              <div class="experiment-key">hypothesis</div>
+              <div class="experiment-val">{e.data.hypothesis}</div>
+            </div>
+          )}
+          {e.data.conclusion && (
+            <div class="experiment-section">
+              <div class="experiment-key">conclusion</div>
+              <div class="experiment-val">{e.data.conclusion}</div>
+            </div>
+          )}
+        </a>
+      );
+    })}
   </section>
 </BaseLayout>
