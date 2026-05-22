@@ -1,0 +1,190 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import StatusPanel from '../components/StatusPanel.astro';
+import ActivityGraph from '../components/ActivityGraph.astro';
+import ProjectCard from '../components/ProjectCard.astro';
+import NoteBlock from '../components/NoteBlock.astro';
+import JournalEntry from '../components/JournalEntry.astro';
+import { getCollection } from 'astro:content';
+
+const allProjects = await getCollection('projects', p => !p.data.draft);
+const activeProjects = allProjects.filter(p => p.data.status === 'active').slice(0, 3);
+
+const allNotes = await getCollection('notes', n => !n.data.draft);
+const recentNotes = allNotes.sort((a, b) => 
+  new Date(b.data.date).getTime() - new Date(a.data.date).getTime()
+).slice(0, 6);
+
+const allJournals = await getCollection('journals', j => !j.data.draft);
+const recentJournals = allJournals.sort((a, b) => 
+  new Date(b.data.date).getTime() - new Date(a.data.date).getTime()
+).slice(0, 3);
+
+const archives = await getCollection('archives');
+const failureCount = archives.length;
+
+const now = new Date().toISOString().split('T')[0];
+---
+
+<BaseLayout title="site.v0.7 — engineering archive">
+  <section id="hero">
+    <div class="hero-meta fade-in">
+      <span>{now}</span>
+      <span class="sep">/</span>
+      <span>systems. experiments. ideas.</span>
+      <span class="sep">/</span>
+      <span style="color:var(--accent)">building in public</span>
+    </div>
+    <h1 class="hero-name fade-in">
+      Alex Mercer<br/><em>engineering archive</em>
+    </h1>
+    <p class="hero-tagline fade-in">
+      I build systems and take them apart.<br/>
+      This site is where the <span class="accent">thinking happens</span> —<br/>
+      failures, redesigns, and all.<span class="cursor"></span>
+    </p>
+    <nav class="fade-in">
+      <a href="#status">status</a>
+      <a href="#activity">activity</a>
+      <a href="#projects">projects</a>
+      <a href="#notes">notes</a>
+      <a href="#now">now</a>
+      <a href="#toolbox">toolbox</a>
+      <a href="#residue">residue</a>
+      <a href="#archive">archive</a>
+    </nav>
+  </section>
+
+  <section id="status">
+    <div class="section-header">
+      <h2>current status</h2>
+      <div class="divider"></div>
+      <span class="ts">updated {now}</span>
+    </div>
+    <StatusPanel />
+    <div style="margin-top:1.5rem; display:flex; gap:1rem; flex-wrap:wrap; align-items:center;">
+      <div class="failure-counter">
+        <span class="num">{failureCount}</span>
+        <span>projects abandoned this year</span>
+      </div>
+      <div class="sys-info">
+        <span>uptime <b id="uptime">—</b></span>
+        <span>timezone <b>UTC+0</b></span>
+        <span>last commit <b>{now}</b></span>
+      </div>
+    </div>
+  </section>
+
+  <section id="activity">
+    <div class="section-header">
+      <h2>activity</h2>
+      <div class="divider"></div>
+      <span class="ts">last 52 weeks</span>
+    </div>
+    <ActivityGraph />
+  </section>
+
+  <section id="projects">
+    <div class="section-header">
+      <h2>projects</h2>
+      <div class="divider"></div>
+      <span class="ts">journals, not showcases</span>
+    </div>
+    <div class="project-list">
+      {activeProjects.map(project => <ProjectCard project={project} />)}
+    </div>
+    <div style="margin-top:1rem; text-align:right;">
+      <a href="/projects" style="font-family:var(--mono); font-size:0.75rem;">view all →</a>
+    </div>
+  </section>
+
+  <section id="notes">
+    <div class="section-header">
+      <h2>notes</h2>
+      <div class="divider"></div>
+      <span class="ts">fragments, not essays</span>
+    </div>
+    <div class="notes-grid">
+      {recentNotes.map(note => <NoteBlock note={note} />)}
+    </div>
+  </section>
+
+  <section id="now">
+    <div class="section-header">
+      <h2>now</h2>
+      <div class="divider"></div>
+      <span class="ts">temporal snapshot / {now}</span>
+    </div>
+    <div class="now-grid">
+      <div class="now-block">
+        <div class="now-block-key">focus</div>
+        <div class="now-block-val">understanding systems at their boundaries — where things break, not where they work.</div>
+      </div>
+      <div class="now-block">
+        <div class="now-block-key">struggle</div>
+        <div class="now-block-val">keeping scope contained. every interesting problem reveals three more.</div>
+      </div>
+      <div class="now-block">
+        <div class="now-block-key">curiosity</div>
+        <div class="now-block-val">CRDTs, conflict-free data structures, and what they say about collaboration as a computational problem.</div>
+      </div>
+      <div class="now-block">
+        <div class="now-block-key">reading</div>
+        <div class="now-block-val">Designing Data-Intensive Applications (again). Different book at a different skill level.</div>
+      </div>
+    </div>
+  </section>
+
+  <section id="archive">
+    <div class="section-header">
+      <h2>timeline</h2>
+      <div class="divider"></div>
+      <span class="ts">reverse chronological</span>
+    </div>
+    <div class="timeline">
+      <div class="tl-entry active">
+        <div class="tl-date">2026-05</div>
+        <div class="tl-title">Rewrote physics engine for the third time</div>
+        <div class="tl-desc">This time it actually feels right. Rust + constraint solver.</div>
+      </div>
+      <div class="tl-entry active">
+        <div class="tl-date">2026-03</div>
+        <div class="tl-title">Started networking fundamentals lab</div>
+        <div class="tl-desc">Building from raw sockets. The kernel hides a lot.</div>
+      </div>
+      <div class="tl-entry">
+        <div class="tl-date">2026-01</div>
+        <div class="tl-title">Distributed log aggregator crossed 10k events/sec</div>
+        <div class="tl-desc">First milestone. Added Raft. Immediately broke everything.</div>
+      </div>
+      <div class="tl-entry">
+        <div class="tl-date">2025-11</div>
+        <div class="tl-title">Started log aggregator project</div>
+        <div class="tl-desc">What was supposed to be a weekend project.</div>
+      </div>
+      <div class="tl-entry">
+        <div class="tl-date">2025-08</div>
+        <div class="tl-title">Built and launched this site</div>
+        <div class="tl-desc">site.v0.1. Barely functional. Published anyway.</div>
+      </div>
+      <div class="tl-entry">
+        <div class="tl-date">2024-09</div>
+        <div class="tl-title">First real distributed system in production</div>
+        <div class="tl-desc">Immediately humbled by network partitions.</div>
+      </div>
+    </div>
+  </section>
+
+  <section id="search-section">
+    <div class="section-header">
+      <h2>search</h2>
+      <div class="divider"></div>
+      <span class="ts">notes, projects, logs</span>
+    </div>
+    <div class="search-wrap">
+      <span class="search-prompt">$</span>
+      <input type="text" id="search-input" placeholder="search the archive..." autocomplete="off" spellcheck="false" />
+    </div>
+    <div class="search-results" id="search-results"></div>
+  </section>
+</BaseLayout>

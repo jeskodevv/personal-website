@@ -1,0 +1,21 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import ExperimentCard from '../../components/ExperimentCard.astro';
+
+const experiments = await getCollection('lab', e => !e.data.draft);
+const sorted = experiments.sort((a, b) => 
+  new Date(b.data.started).getTime() - new Date(a.data.started).getTime()
+);
+---
+
+<BaseLayout title="lab — engineering archive">
+  <section style="padding-top:4rem;">
+    <div class="section-header">
+      <h2>lab</h2>
+      <div class="divider"></div>
+      <span class="ts">{sorted.length} experiments</span>
+    </div>
+    {sorted.map(e => <ExperimentCard experiment={e} />)}
+  </section>
+</BaseLayout>

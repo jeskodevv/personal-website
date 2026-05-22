@@ -1,0 +1,17 @@
+---
+export interface Props {
+  note: any;
+}
+
+const { note } = Astro.props;
+const { date, tags } = note.data;
+const dateStr = date ? date.toISOString().split('T')[0] : '';
+---
+
+<div class="note-card">
+  <div class="note-ts">{dateStr}</div>
+  <div class="note-body">
+    <note.Content />
+  </div>
+  {tags.length > 0 && <div class="note-tag">#{tags.join(' #')}</div>}
+</div>
