@@ -14,7 +14,5 @@ const dateStr = date ? date.toISOString().split('T')[0] : '';
     {project && <span>→ {project}</span>}
     {tags.map(tag => <span class="tag">{tag}</span>)}
   </div>
-  <div class="journal-body">
-    <journal.Content />
-  </div>
+  <div class="journal-body">{journal.body}</div>
 </div>
