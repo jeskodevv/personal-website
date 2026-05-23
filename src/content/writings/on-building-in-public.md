@@ -9,27 +9,27 @@ featured: true
 
 ## The Fear of Imperfection
 
-Most people don't publish until something is polished. I used to be the same way. I'd work or plan on projects for months, keep them private, and then either abandon them or release them with a polished README that hid all the struggle.
+most people dont publish stuff till it is polished or shiny. used to be like that too. id grind on projects for months, keep them private, and then either abandon them or release them with a polished README hiding all the struggle.
 
-That approach has two problems:
+that mindset got two flaws:
 
-1. **You lose the narrative.** The journey is more interesting than the destination. The decisions, the wrong turns, the procrastination, the "ow it makes sense now" moments — these are what other builders learn from.
+1. **You lose the narrative.** the journey is more interesting than the destination. the decisions, the wrong turns, the procrastination, the waste of time, the "ow it makes sense now" moments, these are what other builders actually learn from.
 
-2. **You build alone.** When nobody knows what you're working on, nobody can help, challenge, or collaborate.
+2. **You build alone.** if nobody knows what you're cooking, nobody can help, challenge, or collab.
 
 ## What "Building in Public" Actually Means
 
-It's not about posting daily updates on Instagram or Telegram. It's about making your work visible at every stage:
+this aint about posting daily updates on insta or telegram. its about showin your work from every angle:
 
-- **The messy prototype** — share the first version that barely works
-- **The failed experiment** — document what didn't work and why
-- **The redesign** — explain why the old approach failed
-- **The dead end** — mark it clearly, don't hide it
+- **The messy prototype,** dropping the first version that barely works
+- **The failed experiment,** writing down what went kaboom and why
+- **The redesign,** explaining why the old way sucked
+- **The dead end,** marking it clearly, not hiding it
 
 ## This Site Is the Manifesto
 
-Every project here has a journal. Every journal has its failures. Every failure has some lesson.
+every project here got a journal. every journal got its failures. every failure got some lesson.
 
-If you only see successes, you're not seeing the real work.
+"If you only see successes, you're not seeing the real work."
 
-This is me, and it's the way how I can inspire other builders.
+yeah, this is me, and its the way how i can inspire other builders.
