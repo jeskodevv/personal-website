@@ -2,7 +2,7 @@
 title: "On Building in Public"
 description: "Why I'm starting to publish unfinished work, failed experiments, and half-baked ideas."
 date: "2026-05-22T00:00:00Z"
-updated: "2026-05-22T00:00:00Z"
+updated: "2026-05-23T11:00:00Z"
 tags: ["meta", "craft", "philosophy"]
 featured: true
 ---
